@@ -11,12 +11,16 @@ import {
   
   export async function GET() {
     try {
+      console.log('AWS Region:', process.env.AWS_REGION);
+
       const command = new GetSecretValueCommand({
         SecretId: "prod/app/db",
       });
   
+      console.log('Attempting to fetch secret...');
       const response = await client.send(command);
-      
+      console.log('Secret fetched successfully');
+      console.log('SecretString:', response.SecretString);
       return NextResponse.json({
         success: true,
         message: 'Successfully fetched secret',
