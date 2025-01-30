@@ -19,5 +19,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.738.0"
+  }
 }
