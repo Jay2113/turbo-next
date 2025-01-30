@@ -1,12 +1,6 @@
-import { 
-  SecretsManagerClient, 
-  GetSecretValueCommand,
-  SecretsManagerServiceException 
-} from "@aws-sdk/client-secrets-manager";
+'use client';
 
-const client = new SecretsManagerClient({
-  region: process.env.AWS_REGION || 'us-east-1'
-});
+import { useEffect, useState } from 'react';
 
 type SecretResult = {
   success: boolean;
@@ -15,56 +9,38 @@ type SecretResult = {
   error?: string;
 };
 
-async function getSecret(): Promise<SecretResult> {
-  try {
-    console.log('AWS Region:', process.env.AWS_REGION);
-    console.log('Environment:', process.env.NODE_ENV);
-    
-    const command = new GetSecretValueCommand({
-      SecretId: "prod/app/db",
-    });
+export default function SecretTest() {
+  const [result, setResult] = useState<SecretResult | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    console.log('Attempting to fetch secret...');
-    const response = await client.send(command);
-    console.log('Secret fetched successfully');
-
-    return {
-      success: true,
-      message: 'Successfully fetched secret',
-      hasSecret: !!response.SecretString
-    };
-  } catch (error) {
-    if (error instanceof SecretsManagerServiceException) {
-      console.error('AWS Secrets Manager error:', {
-        message: error.message,
-        code: error.name,
-        requestId: error.$metadata?.requestId,
-        stack: error.stack
-      });
-      
-      return {
+  useEffect(() => {
+    fetch('/api/secret-test')
+      .then(res => res.json())
+      .then(data => setResult(data))
+      .catch(error => setResult({
         success: false,
-        error: `${error.name}: ${error.message}`
-      };
-    }
-    
-    console.error('Unexpected error:', error);
-    return {
-      success: false,
-      error: 'An unexpected error occurred'
-    };
-  }
-}
+        error: error.message
+      }))
+      .finally(() => setLoading(false));
+  }, []);
 
-export default async function SecretTest() {
-  const result = await getSecret();
+  if (loading) {
+    return (
+      <div className="p-6 border rounded-lg bg-white shadow-sm">
+        <h2 className="text-xl font-bold mb-4">Secret Manager Test</h2>
+        <div className="p-4 bg-gray-50 rounded-lg">
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 border rounded-lg bg-white shadow-sm">
-      <h2 className="text-xl font-semibold mb-4">Secret Manager Test</h2>
+      <h2 className="text-xl font-bold mb-4">Secret Manager Test</h2>
       
       <div className={`p-4 rounded-lg ${
-        result.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+        result?.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
       }`}>
         <pre className="whitespace-pre-wrap text-sm">
           {JSON.stringify(result, null, 2)}

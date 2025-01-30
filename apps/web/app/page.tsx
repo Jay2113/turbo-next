@@ -7,7 +7,6 @@ export default function HomePage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-8">
           Secret Manager Test
         </h1>
-        
         <SecretComponent />
       </div>
     </div>
