@@ -1,34 +1,36 @@
 import { 
-    SecretsManagerClient, 
-    GetSecretValueCommand,
-    SecretsManagerServiceException 
-  } from "@aws-sdk/client-secrets-manager";
+    SSMClient, 
+    GetParameterCommand,
+    SSMServiceException 
+  } from "@aws-sdk/client-ssm";
   import { NextResponse } from 'next/server';
   
-  const client = new SecretsManagerClient({
+  const client = new SSMClient({
     region: process.env.AWS_REGION || 'us-east-1'
   });
   
   export async function GET() {
     try {
-      console.log('AWS Region:', process.env.AWS_REGION);
-
-      const command = new GetSecretValueCommand({
-        SecretId: "prod/app/db",
+      const command = new GetParameterCommand({
+        Name: "/amplify/shared/ds105sit0lppb/foo", 
+        WithDecryption: true 
       });
   
-      console.log('Attempting to fetch secret...');
+      console.log('Attempting to fetch secret from parameter store...');
       const response = await client.send(command);
+
       console.log('Secret fetched successfully');
-      console.log('SecretString:', response.SecretString);
+      console.log('SecretString:', response.Parameter?.Value);
+      
       return NextResponse.json({
         success: true,
-        message: 'Successfully fetched secret',
-        hasSecret: !!response.SecretString
+        message: 'Successfully fetched parameter',
+        hasValue: !!response.Parameter?.Value,
+        type: response.Parameter?.Type
       });
     } catch (error) {
-      if (error instanceof SecretsManagerServiceException) {
-        console.error('AWS Secrets Manager error:', {
+      if (error instanceof SSMServiceException) {
+        console.error('AWS SSM error:', {
           message: error.message,
           code: error.name,
           requestId: error.$metadata?.requestId
@@ -46,3 +48,4 @@ import {
       }, { status: 500 });
     }
   }
+  
