@@ -1,4 +1,4 @@
-import SecretManager from './components/SecretComponent';
+// import SecretManager from './components/SecretComponent';
 import Parameter from './components/Parameter';
 
 export default function HomePage() {
