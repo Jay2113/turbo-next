@@ -8,7 +8,7 @@ export default function HomePage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-8">
           IAM Compute Role Demo
         </h1>
-        <SecretManager />
+        {/* <SecretManager /> */}
         <Parameter />
       </div>
     </div>
