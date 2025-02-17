@@ -1,24 +1,24 @@
-'use client'
+'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 
-export default function WelcomeMessage() {
+export default function S3Component() {
   const [imageError, setImageError] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[rgb(0,0,0)]">
-      {/* <div className="w-full max-w-2xl bg-[rgb(13,17,23)] rounded-2xl shadow-2xl mx-4"> */}
-      <div className="w-full max-w-2xl bg-[rgb(0,0,0)] rounded-2xl shadow-2xl mx-4">
+    <div className="absolute inset-0 top-[88px] flex items-center justify-center">
+      <div className="w-full max-w-2xl rounded-2xl mx-4">
         <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
           {!isRevealed ? (
             <button
               onClick={() => setIsRevealed(true)}
-              className="px-8 py-4 bg-[rgb(117,81,194)] text-white text-lg 
-                       rounded-xl hover:bg-[rgb(107,71,184)] transition-colors"
+              className="px-8 py-4 bg-[rgb(117,81,194)] text-white text-lg rounded-xl 
+                       hover:bg-[rgb(107,71,184)] transition-colors"
             >
               <span className="flex items-center gap-2">
-                Access Private S3
+                Access Private S3 Bucket
                 <span className="text-xl">⚡</span>
               </span>
             </button>
@@ -30,11 +30,11 @@ export default function WelcomeMessage() {
                     src="/api/image"
                     alt="Amplify Logo"
                     fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    unoptimized
                     priority
                     onError={() => setImageError(true)}
-                    unoptimized
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}

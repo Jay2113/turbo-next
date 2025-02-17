@@ -1,9 +1,7 @@
 import { S3Client, GetObjectCommand, S3ServiceException } from "@aws-sdk/client-s3";
 import { NextResponse } from 'next/server';
 
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION || 'us-east-1'
-});
+const s3Client = new S3Client({});
 
 const BUCKET_NAME = 'amplify-compute-role-demo';
 const IMAGE_KEY = 'amplify-logo.png';

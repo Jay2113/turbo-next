@@ -15,15 +15,15 @@
 //   );
 // }
 
-import WelcomeMessage from './components/S3Component';
+import S3Component from './components/S3Component';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[rgb(0,0,0)]">
-      <h1 className="text-2xl font-bold text-white py-8 text-center">
+    <div className="relative min-h-screen bg-[rgb(0,0,0)]">
+      <h1 className="text-2xl font-bold text-white py-8 text-center relative z-10">
         Amplify Hosting Compute Role Demo
       </h1>
-      <WelcomeMessage />
+      <S3Component />
     </div>
   );
 }
